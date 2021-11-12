@@ -20,13 +20,14 @@ async function run() {
         const database = client.db("volcanoBicycle");
         const productCollection = database.collection("products");
         const usersCollection = database.collection('users');
+        const ordersCollection = database.collection('orders');
 
-        //insert a new product POST API
-        // app.post('/products', async (req, res) => {
-        //     const newService = req.body;
-        //     const result = await productCollection.insertOne(newService);
-        //     res.json(result);
-        // })
+        // insert a new order POST API
+        app.post('/orders', async (req, res) => {
+            const newOrder = req.body;
+            const result = await ordersCollection.insertOne(newOrder);
+            res.json(result);
+        })
 
         //get all products from db
         app.get('/products', async (req, res) => {
