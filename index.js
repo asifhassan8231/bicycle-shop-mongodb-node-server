@@ -21,11 +21,26 @@ async function run() {
         const productCollection = database.collection("products");
         const usersCollection = database.collection('users');
         const ordersCollection = database.collection('orders');
+        const reviewsCollection = database.collection('reviews');
 
         // insert a new order POST API
         app.post('/orders', async (req, res) => {
             const newOrder = req.body;
             const result = await ordersCollection.insertOne(newOrder);
+            res.json(result);
+        })
+
+        // insert a new product POST API
+        app.post('/products', async (req, res) => {
+            const newProduct = req.body;
+            const result = await productCollection.insertOne(newProduct);
+            res.json(result);
+        })
+
+        // insert a new review POST API
+        app.post('/reviews', async (req, res) => {
+            const newReview = req.body;
+            const result = await reviewsCollection.insertOne(newReview);
             res.json(result);
         })
 
