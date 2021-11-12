@@ -19,6 +19,7 @@ async function run() {
         await client.connect();
         const database = client.db("volcanoBicycle");
         const productCollection = database.collection("products");
+        const usersCollection = database.collection('users');
 
         //insert a new product POST API
         // app.post('/products', async (req, res) => {
@@ -41,6 +42,13 @@ async function run() {
             const result = await productCollection.findOne(query);
             res.json(result);
         })
+
+        //insert an user data
+        app.post('/users', async (req, res) => {
+            const users = req.body;
+            const result = await usersCollection.insertOne(users);
+            res.json(result);
+        });
 
     } finally {
         //   await client.close();
