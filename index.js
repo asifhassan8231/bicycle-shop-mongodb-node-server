@@ -32,6 +32,15 @@ async function run() {
             res.json(result);
         })
 
+        //update an order status
+        app.put('/orders/update', async (req, res) => {
+            const updatedOrder = req.body;
+            const filter = { _id: ObjectId(updatedOrder) };
+            const updateDoc = { $set: { status: 'shipped' } };
+            const result = await ordersCollection.updateOne(filter, updateDoc);
+            res.json(result);
+        })
+
         //check a user is admin or not
         app.get('/users/:email', async (req, res) => {
             const email = req.params.email;
@@ -73,11 +82,26 @@ async function run() {
             res.send(result);
         })
 
+        //get all orders from db
+        app.get('/orders', async (req, res) => {
+            const cursor = ordersCollection.find({});
+            const result = await cursor.toArray();
+            res.send(result);
+        })
+
         //get product by id
         app.get('/products/:id', async (req, res) => {
             const productId = req.params;
             const query = { _id: ObjectId(productId) }
             const result = await productCollection.findOne(query);
+            res.json(result);
+        })
+
+        //cancel an order
+        app.delete('/orders/:id', async (req, res) => {
+            const orderId = req.params;
+            const query = { _id: ObjectId(orderId) }
+            const result = await ordersCollection.deleteOne(query);
             res.json(result);
         })
 
