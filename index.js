@@ -89,6 +89,13 @@ async function run() {
             res.send(result);
         })
 
+        //get all reviews from db
+        app.get('/reviews', async (req, res) => {
+            const cursor = reviewsCollection.find({});
+            const result = await cursor.toArray();
+            res.send(result);
+        })
+
         //get product by id
         app.get('/products/:id', async (req, res) => {
             const productId = req.params;
@@ -97,11 +104,28 @@ async function run() {
             res.json(result);
         })
 
+        //get orders by email
+        app.get('/orders/:email', async (req, res) => {
+            const userEmail = req.params;
+            const query = { email: userEmail }
+            const cursor = ordersCollection.find(userEmail);
+            const result = await cursor.toArray();
+            res.json(result);
+        })
+
         //cancel an order
         app.delete('/orders/:id', async (req, res) => {
             const orderId = req.params;
             const query = { _id: ObjectId(orderId) }
             const result = await ordersCollection.deleteOne(query);
+            res.json(result);
+        })
+
+        //remove a product
+        app.delete('/products/:id', async (req, res) => {
+            const productId = req.params;
+            const query = { _id: ObjectId(productId) }
+            const result = await productCollection.deleteOne(query);
             res.json(result);
         })
 
